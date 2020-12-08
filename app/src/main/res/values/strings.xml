@@ -2,7 +2,7 @@
     <string name="app_name">Doit</string>
     <!-- TaskFragment -->
     <string name="task_hint_description">Description...</string>
-    <string name="task_button_add">Adicionar</string>
-    <string name="task_title">My Tasks</string>
+    <string name="task_button_add">Add</string>
+    <string name="task_title">Task</string>
 
 </resources>

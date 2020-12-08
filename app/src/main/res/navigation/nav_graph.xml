@@ -5,6 +5,11 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/taskFragment">
 
+    <!--
+        Os fragments são instanciados pelo componente de navegação. Aqui definimos
+        a navegação entre fragments. A fragment inicial é definida pelo atributo
+        app:StartDestination acima no elemento nevigation
+     -->
     <fragment
         android:id="@+id/taskFragment"
         android:name="com.allysonjeronimo.doit.ui.task.TaskFragment"

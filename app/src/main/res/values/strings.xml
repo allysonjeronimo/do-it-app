@@ -4,5 +4,6 @@
     <string name="task_hint_description">Description...</string>
     <string name="task_button_add">Add</string>
     <string name="task_title">Task</string>
-
+    <string name="task_inserted_successfuly">Task was successfuly inserted</string>
+    <string name="task_error_to_insert">There was an error when inserting task</string>
 </resources>

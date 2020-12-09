@@ -8,8 +8,8 @@ class DatabaseDataSource(
     private val taskDAO: TaskDAO
 ) : TaskRepository {
 
-    override suspend fun insert(description: String, done: Boolean): Long {
-        return taskDAO.insert(Task(description = description, done = done))
+    override suspend fun insert(description: String): Long {
+        return taskDAO.insert(Task(description = description))
     }
 
     override suspend fun update(id: Long, description: String, done: Boolean) {

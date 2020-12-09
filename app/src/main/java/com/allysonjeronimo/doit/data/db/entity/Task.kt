@@ -8,5 +8,5 @@ data class Task(
     @PrimaryKey(autoGenerate = true)
     val id:Long = 0,
     val description:String,
-    val done:Boolean
+    val done:Boolean = false
 )

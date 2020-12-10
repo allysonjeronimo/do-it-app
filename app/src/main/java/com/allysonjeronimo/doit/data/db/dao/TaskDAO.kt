@@ -1,10 +1,7 @@
 package com.allysonjeronimo.doit.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.allysonjeronimo.doit.data.db.entity.Task
 
 @Dao
@@ -18,5 +15,5 @@ interface TaskDAO {
     @Query("DELETE FROM task")
     suspend fun deleteAll()
     @Query("SELECT * FROM task")
-    suspend fun findAll() : LiveData<List<Task>>
+    fun findAll() : LiveData<List<Task>>
 }

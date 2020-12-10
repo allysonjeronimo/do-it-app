@@ -15,20 +15,22 @@ class TaskViewModel(
     private val repository:TaskRepository
 ) : ViewModel() {
 
-    // Eventos notificarão a view quando for inserido ou enviará msg de erro,
-    // caso ocorra algum
-    // Encapsula o MutableLiveData para evitar alterações diretamente
-    // na View
+    // Eventos notificarão a view quando for inserido ou enviará msg de erro, caso ocorra algum
+    // Encapsula o MutableLiveData para evitar alterações diretamente na View
     private val _taskStateEventData = MutableLiveData<TaskState>()
+
     val taskStateEventData: LiveData<TaskState>
         get() = _taskStateEventData
 
     private val _messageEventData = MutableLiveData<Int>()
+
     val messageEventData: LiveData<Int>
         get() = _messageEventData
 
-    // sincronizar com ciclo de vida do android (viewModelScope.launch (LifeCycle)
+    // sincronizar com ciclo de vida do android (viewModelScope.launch (Escopo de Coroutines)
     fun addTask(description:String) = viewModelScope.launch {
+        // Aqui podemos chamar as funções "suspend"
+        // viewModelScope gerencia o lifecycle
         try{
             val id = repository.insert(description)
             if(id > 0){
@@ -39,6 +41,7 @@ class TaskViewModel(
 
         }catch(ex: Exception){
             Log.e(TAG, ex.toString())
+            // notifica view com mensagem
             _messageEventData.value = R.string.task_error_to_insert
         }
     }
@@ -48,6 +51,6 @@ class TaskViewModel(
     }
 
     companion object{
-        private val TAG = TaskViewModel::class.java.simpleName
+        private val TAG = TaskViewModel::class.simpleName
     }
 }

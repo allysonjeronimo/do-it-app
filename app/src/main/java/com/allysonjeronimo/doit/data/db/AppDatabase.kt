@@ -10,12 +10,13 @@ import com.allysonjeronimo.doit.data.db.entity.Task
 @Database(entities = [Task::class], version = 1)
 abstract class AppDatabase : RoomDatabase(){
 
-    abstract val taskDAO : TaskDAO
+    abstract fun taskDAO() : TaskDAO
 
     companion object{
 
         @Volatile
         private var INSTANCE:AppDatabase? = null
+        private const val DB_NAME = "doit-db"
 
         fun getInstance(context: Context) : AppDatabase{
             synchronized(this){
@@ -24,7 +25,7 @@ abstract class AppDatabase : RoomDatabase(){
                     instance = Room.databaseBuilder(
                         context,
                         AppDatabase::class.java,
-                        "app_database"
+                        DB_NAME
                     ).build()
                 }
                 return instance

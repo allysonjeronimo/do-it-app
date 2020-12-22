@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.allysonjeronimo.doit.R
-import com.allysonjeronimo.doit.data.db.entity.Task
 import com.allysonjeronimo.doit.repository.TaskRepository
 import kotlinx.coroutines.launch
 
@@ -36,7 +35,7 @@ class TaskViewModel(
             if(id > 0){
                 // notifica a view e ela decide como tratar o evento
                 _taskStateEventData.value = TaskState.Inserted
-                _messageEventData.value = R.string.task_inserted_successfuly
+                _messageEventData.value = R.string.task_inserted_successfully
             }
 
         }catch(ex: Exception){

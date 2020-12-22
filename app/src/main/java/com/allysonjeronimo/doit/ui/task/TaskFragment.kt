@@ -75,4 +75,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
         }
     }
 
+    // companion object, newInstance() removido devido o uso do Navigation
+    // que fica encarregado de instanciar os fragments
+
 }

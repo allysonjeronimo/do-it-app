@@ -43,6 +43,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     }
 
     private fun observeEvents() {
+        /*
         this.viewModel.taskStateEventData.observe(viewLifecycleOwner){taskState ->
             when(taskState){
                 TaskViewModel.TaskState.Inserted -> {
@@ -54,7 +55,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
 
         this.viewModel.messageEventData.observe(viewLifecycleOwner){stringResource ->
             Snackbar.make(requireView(), stringResource, Snackbar.LENGTH_SHORT).show()
-        }
+        }*/
     }
 
     private fun clearFields() {

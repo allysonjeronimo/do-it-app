@@ -3,17 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/taskFragment">
+    app:startDestination="@id/taskListFragment">
 
     <!--
         Os fragments são instanciados pelo componente de navegação. Aqui definimos
         a navegação entre fragments. A fragment inicial é definida pelo atributo
         app:StartDestination acima no elemento nevigation
      -->
+
+    <fragment
+        android:id="@+id/taskListFragment"
+        android:name="com.allysonjeronimo.doit.ui.tasklist.TaskListFragment"
+        android:label="task_list_fragment"
+        tools:layout="@layout/task_list_fragment" />
+
     <fragment
         android:id="@+id/taskFragment"
         android:name="com.allysonjeronimo.doit.ui.task.TaskFragment"
         android:label="@string/task_title"
         tools:layout="@layout/task_fragment" />
+
 
 </navigation>

@@ -5,6 +5,12 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 
+/*
+    Adicionar no root do layout da fragment:
+
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+ */
 fun AppCompatActivity.hideKeyboard(){
     val view = this.currentFocus
     if(view != null){

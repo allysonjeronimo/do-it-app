@@ -9,10 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.allysonjeronimo.doit.R
 import com.allysonjeronimo.doit.data.db.AppDatabase
+import com.allysonjeronimo.doit.data.db.dao.TaskDAO
 import com.allysonjeronimo.doit.extensions.hideKeyboard
 import com.allysonjeronimo.doit.repository.DatabaseDataSource
+import com.allysonjeronimo.doit.repository.TaskRepository
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.task_fragment.*
 
@@ -25,10 +28,10 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
         object: ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 // resolvendo todas as dependencias de TaskViewModel
-                val taskDAO = AppDatabase
+                val taskDAO: TaskDAO = AppDatabase
                         .getInstance(requireContext())
                         .taskDAO()
-                val repository = DatabaseDataSource(taskDAO)
+                val repository:TaskRepository = DatabaseDataSource(taskDAO)
                 return TaskViewModel(repository) as T
             }
         }
@@ -43,10 +46,10 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     }
 
     private fun observeEvents() {
-        /*
+
         this.viewModel.taskStateEventData.observe(viewLifecycleOwner){taskState ->
             when(taskState){
-                TaskViewModel.TaskState.Inserted -> {
+                is TaskViewModel.TaskState.Inserted -> {
                     clearFields()
                     hideKeyboard()
                 }
@@ -55,7 +58,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
 
         this.viewModel.messageEventData.observe(viewLifecycleOwner){stringResource ->
             Snackbar.make(requireView(), stringResource, Snackbar.LENGTH_SHORT).show()
-        }*/
+        }
     }
 
     private fun clearFields() {

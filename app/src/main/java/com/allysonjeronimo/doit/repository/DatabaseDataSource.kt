@@ -1,6 +1,5 @@
 package com.allysonjeronimo.doit.repository
 
-import androidx.lifecycle.LiveData
 import com.allysonjeronimo.doit.data.db.dao.TaskDAO
 import com.allysonjeronimo.doit.data.db.entity.Task
 

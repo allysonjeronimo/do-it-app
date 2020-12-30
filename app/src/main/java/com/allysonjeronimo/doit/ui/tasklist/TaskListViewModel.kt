@@ -18,7 +18,6 @@ class TaskListViewModel(
         get() = _allTasksEvent
 
     fun tasks() = viewModelScope.launch {
-        // why postValue?!
-        _allTasksEvent.postValue(taskRepository.findAll())
+        _allTasksEvent.value = taskRepository.findAll()
     }
 }

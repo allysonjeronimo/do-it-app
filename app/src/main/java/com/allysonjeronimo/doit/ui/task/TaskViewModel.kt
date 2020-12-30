@@ -9,13 +9,10 @@ import com.allysonjeronimo.doit.R
 import com.allysonjeronimo.doit.repository.TaskRepository
 import kotlinx.coroutines.launch
 
-// Controla a View
 class TaskViewModel(
     private val repository:TaskRepository
 ) : ViewModel() {
 
-    // Eventos notificarão a view quando for inserido ou enviará msg de erro, caso ocorra algum
-    // Encapsula o MutableLiveData para evitar alterações diretamente na View
     private val _taskStateEventData = MutableLiveData<TaskState>()
 
     val taskStateEventData: LiveData<TaskState>
@@ -33,14 +30,12 @@ class TaskViewModel(
         try{
             val id = repository.insert(description)
             if(id > 0){
-                // notifica a view e ela decide como tratar o evento
                 _taskStateEventData.value = TaskState.Inserted
                 _messageEventData.value = R.string.task_inserted_successfully
             }
 
         }catch(ex: Exception){
             Log.e(TAG, ex.toString())
-            // notifica view com mensagem
             _messageEventData.value = R.string.task_error_to_insert
         }
     }

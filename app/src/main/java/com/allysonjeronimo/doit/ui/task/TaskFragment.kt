@@ -20,15 +20,11 @@ import com.allysonjeronimo.doit.repository.TaskRepository
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.task_fragment.*
 
-// Se no método onCreateView não há nada além do inflater,
-// podemos passar a view por param no construtor do Fragment
 class TaskFragment : Fragment(R.layout.task_fragment) {
 
-    // Se o ViewModel possui parametros, deve-se usar um Factory
     private val viewModel: TaskViewModel by viewModels {
         object: ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                // resolvendo todas as dependencias de TaskViewModel
                 val taskDAO: TaskDAO = AppDatabase
                         .getInstance(requireContext())
                         .taskDAO()
@@ -40,9 +36,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Ouvir os eventos do ViewModel
         observeEvents()
-        // Inicializar listeners de eventos
         setListeners()
     }
 
@@ -53,7 +47,6 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
                 is TaskViewModel.TaskState.Inserted -> {
                     clearFields()
                     hideKeyboard()
-                    // voltar a navegaçao usando Navigation
                     findNavController().popBackStack()
                 }
             }
@@ -81,8 +74,4 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
             this.viewModel.addTask(description)
         }
     }
-
-    // companion object, newInstance() removido devido o uso do Navigation
-    // que fica encarregado de instanciar os fragments
-
 }

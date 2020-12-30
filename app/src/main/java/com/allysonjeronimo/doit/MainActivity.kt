@@ -18,27 +18,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setupToolbar()
+    }
 
+    private fun setupToolbar(){
         this.setSupportActionBar(app_toolbar)
-
         // configurar toolbar utilizando navigation
-        // para a toolbar reagir de acordo com a navegação
-
-        // recupera o navHostFragment (Container das fragments de navegação)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        // configurar java 8 no gradle
+        // requer java 8 no gradle
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        // Sempre que houver alguma navegação
         navController.addOnDestinationChangedListener { _, _, _ ->
-            // modificando ícone de back
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         }
     }
 
-    // BackStack (necessário quando se usa o setupActionBarWithNavController)
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(this.appBarConfiguration) || super.onSupportNavigateUp()
     }

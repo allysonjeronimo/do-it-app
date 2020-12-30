@@ -24,7 +24,7 @@ class DatabaseDataSource(
         taskDAO.deleteAll()
     }
 
-    override fun findAll(): LiveData<List<Task>> {
+    override suspend fun findAll(): List<Task> {
         return taskDAO.findAll()
     }
 

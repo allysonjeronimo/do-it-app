@@ -16,5 +16,5 @@ interface TaskRepository {
     suspend fun delete(id:Long)
     suspend fun deleteAll()
     // Utilizando LiveData (extensions do Room-LiveData) não usamos suspend
-    fun findAll() : LiveData<List<Task>>
+    suspend fun findAll() : List<Task>
 }

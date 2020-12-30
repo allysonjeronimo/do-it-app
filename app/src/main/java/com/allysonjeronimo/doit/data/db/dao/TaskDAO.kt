@@ -18,5 +18,5 @@ interface TaskDAO {
     // Assim, ao inserir novos registros, quem estiver ouvindo esse LiveData
     // será notificado
     @Query("SELECT * FROM task")
-    fun findAll() : LiveData<List<Task>>
+    suspend fun findAll() :List<Task>
 }

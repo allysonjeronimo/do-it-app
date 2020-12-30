@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import com.allysonjeronimo.doit.R
 import com.allysonjeronimo.doit.data.db.AppDatabase
 import com.allysonjeronimo.doit.data.db.dao.TaskDAO
@@ -52,6 +53,8 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
                 is TaskViewModel.TaskState.Inserted -> {
                     clearFields()
                     hideKeyboard()
+                    // voltar a navegaçao usando Navigation
+                    findNavController().popBackStack()
                 }
             }
         }

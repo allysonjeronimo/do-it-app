@@ -54,4 +54,9 @@ class TaskListFragment : Fragment(R.layout.task_list_fragment) {
             findNavController().navigateWithAnimations(R.id.taskFragment)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        this.viewModel.tasks()
+    }
 }

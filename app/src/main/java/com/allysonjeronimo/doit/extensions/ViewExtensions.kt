@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 
 /*
     Adicionar no root do layout da fragment:
-
     android:focusable="true"
     android:focusableInTouchMode="true"
  */

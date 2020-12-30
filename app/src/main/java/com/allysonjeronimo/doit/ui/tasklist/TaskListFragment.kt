@@ -1,9 +1,7 @@
 package com.allysonjeronimo.doit.ui.tasklist
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,10 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.allysonjeronimo.doit.R
 import com.allysonjeronimo.doit.data.db.AppDatabase
 import com.allysonjeronimo.doit.data.db.dao.TaskDAO
-import com.allysonjeronimo.doit.data.db.entity.Task
+import com.allysonjeronimo.doit.extensions.navigateWithAnimations
 import com.allysonjeronimo.doit.repository.DatabaseDataSource
 import com.allysonjeronimo.doit.repository.TaskRepository
-import com.allysonjeronimo.doit.ui.task.TaskViewModel
 import kotlinx.android.synthetic.main.task_list_fragment.*
 
 class TaskListFragment : Fragment(R.layout.task_list_fragment) {
@@ -54,7 +51,7 @@ class TaskListFragment : Fragment(R.layout.task_list_fragment) {
 
     private fun setListeners() {
         this.fab_add_task.setOnClickListener {
-            findNavController().navigate(R.id.taskFragment)
+            findNavController().navigateWithAnimations(R.id.taskFragment)
         }
     }
 }

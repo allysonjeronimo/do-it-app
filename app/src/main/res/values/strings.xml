@@ -6,4 +6,7 @@
     <string name="task_title">Task</string>
     <string name="task_inserted_successfully">Task was successfully inserted</string>
     <string name="task_error_to_insert">There was an error when inserting task</string>
+
+    <!-- TaskListFragment -->
+    <string name="task_list_title">My Tasks</string>
 </resources>

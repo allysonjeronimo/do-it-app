@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/taskListFragment"
         android:name="com.allysonjeronimo.doit.ui.tasklist.TaskListFragment"
-        android:label="task_list_fragment"
+        android:label="@string/task_list_title"
         tools:layout="@layout/task_list_fragment" />
 
     <fragment
@@ -22,6 +22,4 @@
         android:name="com.allysonjeronimo.doit.ui.task.TaskFragment"
         android:label="@string/task_title"
         tools:layout="@layout/task_fragment" />
-
-
 </navigation>

@@ -14,6 +14,8 @@ class TaskListAdapter(
     private val tasks:List<Task>
 ) : RecyclerView.Adapter<TaskListAdapter.TaskListViewHolder>() {
 
+    var onItemClick:((task:Task) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskListViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.task_item, parent, false)
@@ -27,7 +29,7 @@ class TaskListAdapter(
 
     override fun getItemCount() = tasks.size
 
-    class TaskListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class TaskListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         private val textTaskDescription: TextView = itemView.text_task_description
         private val checkTaskDone:CheckBox = itemView.check_task_done
@@ -35,6 +37,9 @@ class TaskListAdapter(
         fun bind(task: Task){
             textTaskDescription.text = task.description
             checkTaskDone.isChecked = task.done
+            itemView.setOnClickListener {
+                onItemClick?.invoke(task)
+            }
         }
     }
 }

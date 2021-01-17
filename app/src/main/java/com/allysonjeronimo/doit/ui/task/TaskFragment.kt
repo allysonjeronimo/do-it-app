@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.allysonjeronimo.doit.R
 import com.allysonjeronimo.doit.data.db.AppDatabase
 import com.allysonjeronimo.doit.data.db.dao.TaskDAO
@@ -19,6 +20,7 @@ import com.allysonjeronimo.doit.repository.DatabaseDataSource
 import com.allysonjeronimo.doit.repository.TaskRepository
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.task_fragment.*
+import kotlinx.android.synthetic.main.task_item.*
 
 class TaskFragment : Fragment(R.layout.task_fragment) {
 
@@ -34,8 +36,16 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
         }
     }
 
+    private val args:TaskFragmentArgs by navArgs()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        args.task?.let { task ->
+            button_add_task.text = resources.getString(R.string.task_button_update)
+            input_description.setText(task.description)
+        }
+
         observeEvents()
         setListeners()
     }
@@ -71,7 +81,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
     private fun setListeners() {
         button_add_task.setOnClickListener {
             val description = input_description.text.toString()
-            this.viewModel.addTask(description)
+            this.viewModel.addOrUpdateTask(id = args.task?.id ?: 0L, description = description)
         }
     }
 }

@@ -40,7 +40,15 @@ class TaskListFragment : Fragment(R.layout.task_list_fragment) {
         this.viewModel.allTasksEvent.observe(
             this.viewLifecycleOwner,
             Observer { tasks ->
-                val taskAdapter = TaskListAdapter(tasks)
+
+                val taskAdapter = TaskListAdapter(tasks).apply {
+                    onItemClick = { task ->
+                        val directions = TaskListFragmentDirections
+                            .actionTaskListFragmentToTaskFragment(task)
+                        findNavController().navigateWithAnimations(directions)
+                    }
+                }
+
                 recycler_tasks.run{
                     setHasFixedSize(true)
                     adapter = taskAdapter
@@ -51,7 +59,7 @@ class TaskListFragment : Fragment(R.layout.task_list_fragment) {
 
     private fun setListeners() {
         this.fab_add_task.setOnClickListener {
-            findNavController().navigateWithAnimations(R.id.taskFragment)
+            findNavController().navigateWithAnimations(R.id.action_taskListFragment_to_taskFragment)
         }
     }
 

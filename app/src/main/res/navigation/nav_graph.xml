@@ -8,18 +8,29 @@
     <!--
         Os fragments são instanciados pelo componente de navegação. Aqui definimos
         a navegação entre fragments. A fragment inicial é definida pelo atributo
-        app:StartDestination acima no elemento nevigation
+        app:StartDestination acima no elemento navigation
      -->
 
     <fragment
         android:id="@+id/taskListFragment"
         android:name="com.allysonjeronimo.doit.ui.tasklist.TaskListFragment"
         android:label="@string/task_list_title"
-        tools:layout="@layout/task_list_fragment" />
+        tools:layout="@layout/task_list_fragment" >
+        <action
+            android:id="@+id/action_taskListFragment_to_taskFragment"
+            app:destination="@id/taskFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/taskFragment"
         android:name="com.allysonjeronimo.doit.ui.task.TaskFragment"
         android:label="@string/task_title"
-        tools:layout="@layout/task_fragment" />
+        tools:layout="@layout/task_fragment" >
+        <argument
+            android:name="task"
+            app:argType="com.allysonjeronimo.doit.data.db.entity.Task"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
+
 </navigation>

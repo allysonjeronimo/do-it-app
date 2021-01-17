@@ -23,10 +23,27 @@ class TaskViewModel(
     val messageEventData: LiveData<Int>
         get() = _messageEventData
 
-    // sincronizar com ciclo de vida do android (viewModelScope.launch (Escopo de Coroutines)
-    fun addTask(description:String) = viewModelScope.launch {
-        // Aqui podemos chamar as funções "suspend"
-        // viewModelScope gerencia o lifecycle
+
+    fun addOrUpdateTask(id:Long = 0, description: String){
+        if(id == 0L){
+            addTask(description)
+        }
+        else{
+            updateTask(id, description)
+        }
+    }
+
+    private fun updateTask(id:Long, description: String) = viewModelScope.launch {
+        try{
+            repository.update(id, description, false)
+            _taskStateEventData.value = TaskState.Updated
+            _messageEventData.value = R.string.task_updated_successfully
+        }catch(ex: Exception){
+            Log.e(TAG, ex.toString())
+        }
+    }
+
+    private fun addTask(description:String) = viewModelScope.launch {
         try{
             val id = repository.insert(description)
             if(id > 0){
@@ -42,6 +59,7 @@ class TaskViewModel(
 
     sealed class TaskState{
         object Inserted: TaskState()
+        object Updated: TaskState()
     }
 
     companion object{

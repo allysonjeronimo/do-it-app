@@ -37,6 +37,13 @@ class TaskListFragment : Fragment(R.layout.task_list_fragment) {
     }
 
     private fun observeEvents() {
+        this.viewModel.isLoadingEvent.observe(
+            this.viewLifecycleOwner,
+            Observer { isLoading ->
+                showProgress(isLoading)
+            }
+        )
+
         this.viewModel.allTasksEvent.observe(
             this.viewLifecycleOwner,
             Observer { tasks ->
@@ -55,6 +62,20 @@ class TaskListFragment : Fragment(R.layout.task_list_fragment) {
                 }
             }
         )
+    }
+
+    private fun showProgress(show:Boolean){
+        progress_bar.visibility = if(show){
+            showRecyclerView(false)
+            View.VISIBLE
+        } else {
+            showRecyclerView(true)
+            View.GONE
+        }
+    }
+
+    private fun showRecyclerView(show:Boolean){
+        recycler_tasks.visibility = if(show) View.VISIBLE else View.GONE
     }
 
     private fun setListeners() {

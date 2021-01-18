@@ -4,10 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.allysonjeronimo.doit.data.db.entity.Task
 import com.allysonjeronimo.doit.repository.TaskRepository
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -22,14 +19,15 @@ import org.junit.Test
 class TaskListViewModelTest {
 
     /**
-     * Forçar ao viewModel para executar nessa thread atual e não na Main Thread do Android,
-     * o que causaria um erro já que estamos executando na JVM
+     * Forçar ao viewModel para executar na thread atual e não na Main Thread do Android,
+     * o que causaria erro já que o teste executa na JVM
      */
     @get:Rule
     val rule = InstantTaskExecutorRule()
     private val repository = mockk<TaskRepository>()
     // relaxed = true, para que não seja chamado o every
     private val allTasksEventObserver = mockk<Observer<List<Task>>>(relaxed = true)
+    private val isLoadingObserver = mockk<Observer<Boolean>>(relaxed = true)
 
     private val testDispatcher = TestCoroutineDispatcher()
 
@@ -64,12 +62,34 @@ class TaskListViewModelTest {
         verify { allTasksEventObserver.onChanged(mockedList) }
     }
 
+    @Test
+    fun `when view model fetches data is completed then loading should be set to false`(){
+        val viewModel = instantiateViewModel()
+        val mocketList = listOf(
+            Task(1, "Estudar"),
+            Task(2, "Ler"),
+            Task(3, "Programar")
+        )
+
+        coEvery { repository.findAll() } returns mocketList
+
+        viewModel.tasks()
+
+        coVerifyOrder {
+            isLoadingObserver.onChanged(true)
+            repository.findAll()
+            allTasksEventObserver.onChanged(mocketList)
+            isLoadingObserver.onChanged(false)
+        }
+    }
 
     private fun instantiateViewModel() : TaskListViewModel {
         val viewModel = TaskListViewModel(repository)
         // registrar o observer utilizando observeForever
         // já que estamos na JVM e não temos o lifeCycle
         viewModel.allTasksEvent.observeForever(allTasksEventObserver)
+        viewModel.isLoadingEvent.observeForever(isLoadingObserver)
+
         return viewModel
     }
 }

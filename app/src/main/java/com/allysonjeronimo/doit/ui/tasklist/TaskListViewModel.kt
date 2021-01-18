@@ -12,12 +12,18 @@ class TaskListViewModel(
     private val taskRepository: TaskRepository
 ) : ViewModel() {
 
+    private val _isLoadingEvent = MutableLiveData<Boolean>()
     private val _allTasksEvent = MutableLiveData<List<Task>>()
 
     val allTasksEvent:LiveData<List<Task>>
         get() = _allTasksEvent
 
+    val isLoadingEvent:LiveData<Boolean>
+        get() = _isLoadingEvent
+
     fun tasks() = viewModelScope.launch {
+        _isLoadingEvent.value = true
         _allTasksEvent.value = taskRepository.findAll()
+        _isLoadingEvent.value = false
     }
 }

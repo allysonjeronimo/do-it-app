@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
@@ -44,6 +45,7 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
         args.task?.let { task ->
             button_add_task.text = resources.getString(R.string.task_button_update)
             input_description.setText(task.description)
+            button_delete_task.visibility = View.VISIBLE
         }
 
         observeEvents()
@@ -52,15 +54,18 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
 
     private fun observeEvents() {
 
-        this.viewModel.taskStateEventData.observe(viewLifecycleOwner){taskState ->
+        this.viewModel.taskStateEventData.observe(viewLifecycleOwner, Observer {taskState ->
             when(taskState){
-                is TaskViewModel.TaskState.Inserted -> {
+                is TaskViewModel.TaskState.Inserted,
+                is TaskViewModel.TaskState.Updated,
+                is TaskViewModel.TaskState.Deleted -> {
                     clearFields()
                     hideKeyboard()
+                    requireView().requestFocus()
                     findNavController().popBackStack()
                 }
             }
-        }
+        })
 
         this.viewModel.messageEventData.observe(viewLifecycleOwner){stringResource ->
             Snackbar.make(requireView(), stringResource, Snackbar.LENGTH_SHORT).show()
@@ -82,6 +87,9 @@ class TaskFragment : Fragment(R.layout.task_fragment) {
         button_add_task.setOnClickListener {
             val description = input_description.text.toString()
             this.viewModel.addOrUpdateTask(id = args.task?.id ?: 0L, description = description)
+        }
+        button_delete_task.setOnClickListener {
+            this.viewModel.deleteTask(args.task?.id ?: 0L)
         }
     }
 }

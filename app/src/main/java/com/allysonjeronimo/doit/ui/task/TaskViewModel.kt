@@ -40,6 +40,7 @@ class TaskViewModel(
             _messageEventData.value = R.string.task_updated_successfully
         }catch(ex: Exception){
             Log.e(TAG, ex.toString())
+            _messageEventData.value = R.string.task_error_to_update
         }
     }
 
@@ -57,9 +58,23 @@ class TaskViewModel(
         }
     }
 
+    fun deleteTask(id: Long) = viewModelScope.launch{
+        try{
+            if(id != 0L){
+                repository.delete(id)
+                _taskStateEventData.value = TaskState.Deleted
+                _messageEventData.value = R.string.task_deleted_successfully
+            }
+        }catch(ex: Exception){
+            Log.e(TAG, ex.toString())
+            _messageEventData.value = R.string.task_error_to_delete
+        }
+    }
+
     sealed class TaskState{
         object Inserted: TaskState()
         object Updated: TaskState()
+        object Deleted: TaskState()
     }
 
     companion object{

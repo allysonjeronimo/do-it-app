@@ -40,4 +40,17 @@
         android:text="@string/task_button_add"
         />
 
+    <Button
+        android:id="@+id/button_delete_task"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/task_button_delete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@android:color/holo_red_dark"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

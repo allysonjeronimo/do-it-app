@@ -14,6 +14,7 @@ import com.allysonjeronimo.doit.data.db.dao.TaskDAO
 import com.allysonjeronimo.doit.extensions.navigateWithAnimations
 import com.allysonjeronimo.doit.repository.DatabaseDataSource
 import com.allysonjeronimo.doit.repository.TaskRepository
+import com.allysonjeronimo.doit.ui.adapters.TaskListAdapter
 import kotlinx.android.synthetic.main.task_list_fragment.*
 
 class TaskListFragment : Fragment(R.layout.task_list_fragment) {
@@ -86,6 +87,7 @@ class TaskListFragment : Fragment(R.layout.task_list_fragment) {
 
     override fun onResume() {
         super.onResume()
+        showRecyclerView(false)
         this.viewModel.tasks()
     }
 }

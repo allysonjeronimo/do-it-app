@@ -31,9 +31,6 @@ class TaskListViewModelTest {
 
     private val testDispatcher = TestCoroutineDispatcher()
 
-    /**
-     * Para testar utilizando Coroutines
-     */
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)

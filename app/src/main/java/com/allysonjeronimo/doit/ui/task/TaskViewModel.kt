@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.allysonjeronimo.doit.R
 import com.allysonjeronimo.doit.repository.TaskRepository
+import com.allysonjeronimo.doit.ui.validator.TaskValidator
 import kotlinx.coroutines.launch
 
 class TaskViewModel(
@@ -14,6 +15,7 @@ class TaskViewModel(
 ) : ViewModel() {
 
     private val _taskStateEventData = MutableLiveData<TaskState>()
+    private val validator = TaskValidator()
 
     val taskStateEventData: LiveData<TaskState>
         get() = _taskStateEventData
@@ -46,12 +48,16 @@ class TaskViewModel(
 
     private fun addTask(description:String) = viewModelScope.launch {
         try{
-            val id = repository.insert(description)
-            if(id > 0){
-                _taskStateEventData.value = TaskState.Inserted
-                _messageEventData.value = R.string.task_inserted_successfully
+            if(validator.validate(description)){
+                val id = repository.insert(description)
+                if(id > 0){
+                    _taskStateEventData.value = TaskState.Inserted
+                    _messageEventData.value = R.string.task_inserted_successfully
+                }
             }
-
+            else{
+                _messageEventData.value = R.string.task_error_invalid_description
+            }
         }catch(ex: Exception){
             Log.e(TAG, ex.toString())
             _messageEventData.value = R.string.task_error_to_insert

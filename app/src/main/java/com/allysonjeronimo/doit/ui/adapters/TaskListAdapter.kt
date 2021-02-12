@@ -1,4 +1,4 @@
-package com.allysonjeronimo.doit.ui.tasklist
+package com.allysonjeronimo.doit.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View

@@ -8,6 +8,7 @@
     <string name="task_inserted_successfully">Task was successfully inserted</string>
     <string name="task_updated_successfully">Task was successfully updated</string>
     <string name="task_deleted_successfully">Task was successfully deleted</string>
+    <string name="task_error_invalid_description">Invalid description</string>
     <string name="task_error_to_insert">There was an error when inserting task</string>
     <string name="task_error_to_update">There was an error when updating task</string>
     <string name="task_error_to_delete">There was an error when deleting task</string>

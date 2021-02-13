@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.allysonjeronimo.doit.R
 import com.allysonjeronimo.doit.data.db.entity.Task
 import com.allysonjeronimo.doit.repository.TaskRepository
 import kotlinx.coroutines.launch
@@ -12,18 +13,26 @@ class TaskListViewModel(
     private val taskRepository: TaskRepository
 ) : ViewModel() {
 
-    private val _isLoadingEvent = MutableLiveData<Boolean>()
-    private val _allTasksEvent = MutableLiveData<List<Task>>()
+    private val _isLoadingEventData = MutableLiveData<Boolean>()
+    private val _allTasksEventData = MutableLiveData<List<Task>>()
+    private val _messageEventData = MutableLiveData<Int>()
 
-    val allTasksEvent:LiveData<List<Task>>
-        get() = _allTasksEvent
+    val allTasksEventData:LiveData<List<Task>>
+        get() = _allTasksEventData
 
-    val isLoadingEvent:LiveData<Boolean>
-        get() = _isLoadingEvent
+    val isLoadingEventData:LiveData<Boolean>
+        get() = _isLoadingEventData
+
+    val messageEventData:LiveData<Int>
+        get() = _messageEventData
 
     fun tasks() = viewModelScope.launch {
-        _isLoadingEvent.value = true
-        _allTasksEvent.value = taskRepository.findAll()
-        _isLoadingEvent.value = false
+        try{
+            _isLoadingEventData.value = true
+            _allTasksEventData.value = taskRepository.findAll()
+            _isLoadingEventData.value = false
+        }catch(ex:Exception){
+            _messageEventData.value = R.string.task_list_error_on_loading
+        }
     }
 }

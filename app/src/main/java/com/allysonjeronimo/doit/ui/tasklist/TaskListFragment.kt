@@ -38,14 +38,14 @@ class TaskListFragment : Fragment(R.layout.task_list_fragment) {
     }
 
     private fun observeEvents() {
-        this.viewModel.isLoadingEvent.observe(
+        this.viewModel.isLoadingEventData.observe(
             this.viewLifecycleOwner,
             Observer { isLoading ->
                 showProgress(isLoading)
             }
         )
 
-        this.viewModel.allTasksEvent.observe(
+        this.viewModel.allTasksEventData.observe(
             this.viewLifecycleOwner,
             Observer { tasks ->
 

@@ -2,6 +2,7 @@ package com.allysonjeronimo.doit.ui.tasklist
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.allysonjeronimo.doit.R
 import com.allysonjeronimo.doit.data.db.entity.Task
 import com.allysonjeronimo.doit.repository.TaskRepository
 import io.mockk.*
@@ -28,12 +29,18 @@ class TaskListViewModelTest {
     // relaxed = true, para que não seja chamado o every
     private val allTasksEventObserver = mockk<Observer<List<Task>>>(relaxed = true)
     private val isLoadingObserver = mockk<Observer<Boolean>>(relaxed = true)
+    private val messageEventObserver = mockk<Observer<Int>>(relaxed = true)
 
     private val testDispatcher = TestCoroutineDispatcher()
+
+    private lateinit var viewModel:TaskListViewModel
+    private lateinit var mockedList:List<Task>
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
+        instantiateViewModel()
+        mockList()
     }
 
     @After
@@ -42,15 +49,25 @@ class TaskListViewModelTest {
         testDispatcher.cleanupTestCoroutines()
     }
 
-    @Test
-    fun `when view model fetches data then it should call the repository`(){
-        val viewModel = instantiateViewModel()
-        val mockedList = listOf(
+    private fun instantiateViewModel(){
+        viewModel = TaskListViewModel(repository)
+        // registrar o observer utilizando observeForever
+        // já que estamos na JVM e não temos o lifeCycle
+        viewModel.allTasksEventData.observeForever(allTasksEventObserver)
+        viewModel.isLoadingEventData.observeForever(isLoadingObserver)
+        viewModel.messageEventData.observeForever(messageEventObserver)
+    }
+
+    private fun mockList(){
+        mockedList = listOf(
             Task(1, "Estudar"),
             Task(2, "Ler"),
             Task(3, "Programar")
         )
+    }
 
+    @Test
+    fun `when view model fetches data then it should call the repository`(){
         coEvery{repository.findAll()} returns mockedList
 
         viewModel.tasks()
@@ -61,32 +78,32 @@ class TaskListViewModelTest {
 
     @Test
     fun `when view model fetches data is completed then loading should be set to false`(){
-        val viewModel = instantiateViewModel()
-        val mocketList = listOf(
-            Task(1, "Estudar"),
-            Task(2, "Ler"),
-            Task(3, "Programar")
-        )
-
-        coEvery { repository.findAll() } returns mocketList
+        coEvery { repository.findAll() } returns mockedList
 
         viewModel.tasks()
 
         coVerifyOrder {
             isLoadingObserver.onChanged(true)
             repository.findAll()
-            allTasksEventObserver.onChanged(mocketList)
+            allTasksEventObserver.onChanged(mockedList)
             isLoadingObserver.onChanged(false)
         }
     }
 
-    private fun instantiateViewModel() : TaskListViewModel {
-        val viewModel = TaskListViewModel(repository)
-        // registrar o observer utilizando observeForever
-        // já que estamos na JVM e não temos o lifeCycle
-        viewModel.allTasksEvent.observeForever(allTasksEventObserver)
-        viewModel.isLoadingEvent.observeForever(isLoadingObserver)
+    @Test
+    fun `when view model tasks get exception then messageEventData should be set to error`(){
 
-        return viewModel
+        coEvery { repository.findAll() } throws Exception()
+
+        viewModel.tasks()
+
+        coVerify {
+            repository.findAll()
+        }
+
+        coVerify {
+            messageEventObserver.onChanged(R.string.task_list_error_on_loading)
+        }
     }
+
 }
